@@ -3,7 +3,7 @@ const { CognitoIdentityProviderClient, ConfirmSignUpCommand } = require("@aws-sd
 const client = new CognitoIdentityProviderClient({ region: 'ap-southeast-2' });
 
 // specify Cognito app client id
-const CLIENT_ID = "2t4iasj3up6u25bhru2m1cac1n";
+const CLIENT_ID = process.env.CLIENT_ID;
 
 // confirmSignUp function to handle user confirmation
 const confirmSignUp = async (event) => {

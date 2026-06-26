@@ -7,10 +7,9 @@ provider:
   name: aws
   runtime: nodejs22.x
   region: ap-southeast-2
-  # Uncomment to easily set up a custom domain. Read the docs for more details:
-  # https://www.serverless.com/framework/docs/providers/aws/guide/domains
-  # domain: api.example.com
-
+  environment:
+    CLIENT_ID : ${ssm:/CLIENT_ID}
+    
 functions:
   signUp:
     handler: handlers/signUp.signUp
@@ -23,4 +22,10 @@ functions:
     events:
       - httpApi:
           path: /confirm-sign-up
+          method: post
+  signIn:
+    handler: handlers/signIn.signIn
+    events:
+      - httpApi:
+          path: /sign-in
           method: post
