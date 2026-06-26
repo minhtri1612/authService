@@ -1,0 +1,47 @@
+// import AWS Congnito SDK Classes
+// CognitoIdentityproviderClient is the main class for interacting with AWS Cognito
+// SignUpCommand is the command used to sign up a new user
+
+const { CognitoIdentityProviderClient, SignUpCommand } = require("@aws-sdk/client-cognito-identity-provider");
+
+const client = new CognitoIdentityProviderClient({ region: 'ap-southeast-2' });
+
+// specify Cognito app client id
+const CLIENT_ID = "2t4iasj3up6u25bhru2m1cac1n";
+
+// signUp function to handle user sign up
+const signUp = async (event) => {
+  const { email, fullName, password } = JSON.parse(event.body);
+  // prepare the parameters for the SignUpCommand
+    const params = {
+        ClientId: CLIENT_ID,
+        Username: email,
+        Password: password,
+        UserAttributes: [
+            {
+                Name: "email",
+                Value: email
+            },
+            {
+                Name: "name",
+                Value: fullName
+            }
+        ]
+    };
+    try {
+        const command = new SignUpCommand(params);
+        await client.send(command);
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: "User signed up successfully" })
+        };
+    } catch (error) {
+        console.error("Error signing up user:", error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: "Internal server error" })
+        };
+    }
+}
+
+module.exports = { signUp };

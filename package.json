@@ -1,0 +1,11 @@
+{
+  "name": "authservice",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Serverless auth service",
+  "main": "handler.js",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.883.0"
+  }
+}
