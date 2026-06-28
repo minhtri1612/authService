@@ -3,8 +3,8 @@
 // SignUpCommand is the command used to sign up a new user
 
 const { CognitoIdentityProviderClient, SignUpCommand } = require("@aws-sdk/client-cognito-identity-provider");
-
-const client = new CognitoIdentityProviderClient({ region: 'ap-southeast-2' });
+const UserModel = require("../models/userModel");
+const client = new CognitoIdentityProviderClient({ region: process.env.REGION });
 
 // specify Cognito app client id
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -31,6 +31,8 @@ const signUp = async (event) => {
     try {
         const command = new SignUpCommand(params);
         await client.send(command);
+        const newUser = new UserModel(email, fullName);
+        await newUser.save();
         return {
             statusCode: 200,
             body: JSON.stringify({ message: "User signed up successfully" })
@@ -39,7 +41,7 @@ const signUp = async (event) => {
         console.error("Error signing up user:", error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Internal server error" })
+            body: JSON.stringify({ error: "Internal server error", details: error.message, name: error.name })
         };
     }
 }

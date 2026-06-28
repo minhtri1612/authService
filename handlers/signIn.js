@@ -1,6 +1,6 @@
 const { CognitoIdentityProviderClient, InitiateAuthCommand } = require("@aws-sdk/client-cognito-identity-provider");
 
-const client = new CognitoIdentityProviderClient({ region: 'ap-southeast-2' });
+const client = new CognitoIdentityProviderClient({ region: process.env.REGION });
 
 // specify Cognito app client id
 const CLIENT_ID = process.env.CLIENT_ID;
